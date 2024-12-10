@@ -7,8 +7,8 @@ public class LogicsImpl implements Logics {
 
 	private List<Integer> values;
 
-	public LogicsImpl(int size) {
-		//TODO Auto-generated constructor stub
+	public LogicsImpl(final int size) {
+		values = new ArrayList<Integer>(size);
 	}
 
 	@Override
@@ -23,8 +23,11 @@ public class LogicsImpl implements Logics {
 
 	@Override
 	public List<Boolean> enablings() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'enablings'");
+		List<Boolean> enablings = new ArrayList<>(size());
+		for (int i = 0; i < size(); i++) {
+			enablings.set(i, (this.values.get(i) < size()));
+		}
+		return enablings;
 	}
 
 	@Override
@@ -43,13 +46,14 @@ public class LogicsImpl implements Logics {
 				out += "|";
 			}
 		}
+		out += ">>";
 		return out;
 	}
 
 	@Override
 	public boolean toQuit() {
 		final Integer n = this.values.getFirst();
-		for (int i = 1; i < this.values.size(); i++) {
+		for (int i = 1; i < size(); i++) {
 			if (!this.values.get(i).equals(n)) {
 				return true;
 			}
