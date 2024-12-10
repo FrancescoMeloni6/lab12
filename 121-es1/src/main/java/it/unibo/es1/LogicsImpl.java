@@ -8,7 +8,10 @@ public class LogicsImpl implements Logics {
 	private List<Integer> values;
 
 	public LogicsImpl(final int size) {
-		values = new ArrayList<Integer>(size);
+		this.values = new ArrayList<Integer>(size);
+		for (int i = 0; i < size; i++) {
+			this.values.add(0);
+		}
 	}
 
 	@Override
@@ -25,7 +28,7 @@ public class LogicsImpl implements Logics {
 	public List<Boolean> enablings() {
 		List<Boolean> enablings = new ArrayList<>(size());
 		for (int i = 0; i < size(); i++) {
-			enablings.set(i, (this.values.get(i) < size()));
+			enablings.add(this.values.get(i) < size());
 		}
 		return enablings;
 	}
@@ -55,9 +58,9 @@ public class LogicsImpl implements Logics {
 		final Integer n = this.values.getFirst();
 		for (int i = 1; i < size(); i++) {
 			if (!this.values.get(i).equals(n)) {
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 }
