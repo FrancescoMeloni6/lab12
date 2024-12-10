@@ -1,8 +1,11 @@
 package it.unibo.es1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogicsImpl implements Logics {
+
+	private List<Integer> values;
 
 	public LogicsImpl(int size) {
 		//TODO Auto-generated constructor stub
@@ -10,14 +13,12 @@ public class LogicsImpl implements Logics {
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'size'");
+		return this.values.size();
 	}
 
 	@Override
 	public List<Integer> values() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'values'");
+		return new ArrayList<>(this.values);
 	}
 
 	@Override
@@ -28,19 +29,31 @@ public class LogicsImpl implements Logics {
 
 	@Override
 	public int hit(int elem) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'hit'");
+		this.values.set(elem, this.values.get(elem) + 1);
+		return this.values.get(elem);
 	}
 
 	@Override
 	public String result() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'result'");
+		String out = "<<";
+		var i = this.values.iterator();
+		while (i.hasNext()) {
+			out += i.next();
+			if (i.hasNext()) {
+				out += "|";
+			}
+		}
+		return out;
 	}
 
 	@Override
 	public boolean toQuit() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'toQuit'");
+		final Integer n = this.values.getFirst();
+		for (int i = 1; i < this.values.size(); i++) {
+			if (!this.values.get(i).equals(n)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
