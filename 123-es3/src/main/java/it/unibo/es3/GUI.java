@@ -21,8 +21,10 @@ public class GUI extends JFrame {
         this.getContentPane().add(panel);
         
         ActionListener al = e -> {
-            var jb = (JButton)e.getSource();
-        	jb.setText(String.valueOf(cells.indexOf(jb)));
+            if (this.logics.toQuit()) {
+                System.exit(0);
+            }
+            this.logics.advance().forEach(p -> this.cells.get(p.getX() + p.getY() * width).setText("*"));
         };
                 
         for (int i=0; i<width; i++){

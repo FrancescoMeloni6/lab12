@@ -8,4 +8,6 @@ public interface Logics {
     List<Pair<Integer, Integer>> getInitalPositions();
 
     Set<Pair<Integer, Integer>> advance();
+
+    Boolean toQuit();
 }

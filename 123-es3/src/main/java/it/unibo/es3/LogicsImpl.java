@@ -1,11 +1,8 @@
 package it.unibo.es3;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -15,13 +12,12 @@ public class LogicsImpl implements Logics {
 
     private final List<Pair<Integer, Integer>> randomizedPositions;
     private final int width;
-    private final Map<Pair<Integer, Integer>, Boolean> map;
+    private final Set<Pair<Integer, Integer>> advanced;
 
-    public LogicsImpl(int width) {
+    public LogicsImpl(final int width) {
         this.width = width;
         this.randomizedPositions = new ArrayList<Pair<Integer, Integer>>(RANDOMIZED_NUMBERS);
-        this.map = new HashMap<>();
-        initializeMap();
+        this.advanced = new HashSet<>();
         randomizePositions();
     }
 
@@ -36,16 +32,8 @@ public class LogicsImpl implements Logics {
                     Math.abs(r.nextInt() % width)));
                 if(inputOk) {
                     randomizedPositions.add(pos);
-                    this.map.put(pos, true);
+                    this.advanced.add(pos);
                 }
-            }
-        }
-    }
-
-    private void initializeMap() {
-        for (int i = 0; i < this.width; i++) {
-            for (int j = 0; j < this.width; j++) {
-                this.map.put(new Pair<Integer,Integer>(i, j), false);
             }
         }
     }
@@ -58,17 +46,29 @@ public class LogicsImpl implements Logics {
     @Override
     public Set<Pair<Integer, Integer>> advance() {
         final Set<Pair<Integer, Integer>> out = new HashSet<>();
-        for (Pair<Integer, Integer> key : map.keySet()) {
-            if (map.get(key)) {
-                out.addAll(getAdiacentPositions(key));
-            }
+        for (Pair<Integer, Integer> key : this.advanced) {
+            out.addAll(getAdiacentPositions(key));
         }
+        advanced.addAll(out);
         return out;
     }
 
-    private List<Pair<Integer, Integer>> getAdiacentPositions(Pair<Integer, Integer> pos) {
-        List<Pair<Integer, Integer>> adiacents = new LinkedList<>();
-        
+    private Set<Pair<Integer, Integer>> getAdiacentPositions(final Pair<Integer, Integer> pos) {
+        Set<Pair<Integer, Integer>> adiacents = new HashSet<>();
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                final int x = pos.getX() + i;
+                final int y = pos.getY() + j;
+                if (x >= 0 && x <= width - 1 && y >= 0 && y <= width - 1 && !(x == pos.getX() && y == pos.getY())) {
+                    adiacents.add(new Pair<Integer,Integer>(x, y));
+                }         
+            }
+        }
         return adiacents;
+    }
+
+    @Override
+    public Boolean toQuit() {
+        return advanced.size() >= width * width;
     }
 }
