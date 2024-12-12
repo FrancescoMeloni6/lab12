@@ -32,12 +32,12 @@ public class LogicsImpl implements Logics {
         for (int i = 0; i < this.side; i++) {
             rowFilled = true;
             for (int j = 0; j < this.side && rowFilled; j++) {
-                if (matrix[i][j]) {
+                if (!matrix[i][j]) {
                     rowFilled = false;
                 }
-                if (rowFilled) {
-                    return true;
-                }
+            }
+            if (rowFilled) {
+                return true;
             }
         }
         return false;
@@ -48,12 +48,12 @@ public class LogicsImpl implements Logics {
         for (int i = 0; i < this.side; i++) {
             coloumnFilled = true;
             for (int j = 0; j < this.side && coloumnFilled; j++) {
-                if (matrix[i][j]) {
+                if (!matrix[j][i]) {
                     coloumnFilled = false;
                 }
-                if (coloumnFilled) {
-                    return true;
-                }
+            }
+            if (coloumnFilled) {
+                return true;
             }
         }
         return false;
